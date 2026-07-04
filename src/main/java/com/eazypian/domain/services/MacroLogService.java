@@ -1,8 +1,8 @@
-package com.eazypian.domain.services;
+package com.eazyplan.ia.domain.services;
 
-import com.eazypian.domain.entities.MacroLog;
-import com.eazypian.domain.repositories.MacroLogRepository;
-import com.eazypian.infrastructure.database.DatabaseConfig;
+import com.eazyplan.ia.domain.entities.MacroLog;
+import com.eazyplan.ia.domain.repositories.MacroLogRepository;
+import com.eazyplan.ia.infrastructure.database.DatabaseConfig;
 
 import java.time.LocalDate;
 import java.util.List;

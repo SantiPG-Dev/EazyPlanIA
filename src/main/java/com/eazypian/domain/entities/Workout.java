@@ -1,4 +1,4 @@
-package com.eazypian.domain.entities;
+package com.eazyplan.ia.domain.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

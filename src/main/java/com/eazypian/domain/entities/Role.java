@@ -1,4 +1,4 @@
-package com.eazypian.domain.entities;
+package com.eazyplan.ia.domain.entities;
 
 public enum Role {
     ADMIN,

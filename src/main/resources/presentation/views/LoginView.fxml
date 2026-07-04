@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.eazypian.presentation.controllers.LoginController"
+      alignment="CENTER">
+
+    <padding>
+        <Insets top="80" right="40" bottom="80" left="40"/>
+    </padding>
+
+    <!-- Logo / Título -->
+    <Text text="EazyPlanIA" style="-fx-font-size: 36px; -fx-font-weight: bold;" wrapText="true" alignment="CENTER"/>
+    <Label text="Gestión de Salud y Bienestar" style="-fx-text-fill: #888; -fx-font-style: italic;" alignment="CENTER"/>
+
+    <!-- Contenedor del formulario -->
+    <BorderPane maxWidth="350">
+        <left>
+            <StackPane VBox.vgrow="ALWAYS">
+                <Label fx:id="titleLabel" text="Iniciar sesión" style="-fx-text-fill: #4a90d9; -fx-font-size: 20px;" alignment="CENTER"/>
+
+                <!-- Campos -->
+                <TextField fx:id="usernameField" promptText="Usuario" prefWidth="250" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="8" right="12" bottom="8" left="12"/>
+                    </padding>
+                </TextField>
+
+                <PasswordField fx:id="passwordField" promptText="Contraseña" prefWidth="250" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="8" right="12" bottom="8" left="12"/>
+                    </padding>
+                </PasswordField>
+
+                <!-- Botones -->
+                <HBox spacing="16" alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                    <Button text="Ingresar" fx:id="loginButton" onAction="#handleLogin"/>
+                    <Button text="Registrarse" fx:id="registerButton" onAction="#handleRegister"/>
+                </HBox>
+            </StackPane>
+        </left>
+    </BorderPane>
+
+    <!-- Mensaje de error -->
+    <Label fx:id="errorMessage" text="" style="-fx-text-fill: #d9534f; -fx-font-size: 12px;" visible="false"/>
+
+</VBox>

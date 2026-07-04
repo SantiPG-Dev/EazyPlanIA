@@ -1,7 +1,7 @@
-package com.eazypian.domain.services;
+package com.eazyplan.ia.domain.services;
 
-import com.eazypian.domain.entities.Diet;
-import com.eazypian.domain.repositories.DietRepository;
+import com.eazyplan.ia.domain.entities.Diet;
+import com.eazyplan.ia.domain.repositories.DietRepository;
 import java.util.List;
 
 public class DietService {
