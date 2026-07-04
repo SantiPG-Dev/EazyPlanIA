@@ -1,10 +1,10 @@
-package com.eazypian.domain.services;
+package com.eazyplan.ia.domain.services;
 
-import com.eazypian.domain.entities.GroceryItem;
-import com.eazypian.domain.entities.GroceryList;
-import com.eazypian.domain.repositories.GroceryItemRepository;
-import com.eazypian.domain.repositories.GroceryListRepository;
-import com.eazypian.infrastructure.database.DatabaseConfig;
+import com.eazyplan.ia.domain.entities.GroceryItem;
+import com.eazyplan.ia.domain.entities.GroceryList;
+import com.eazyplan.ia.domain.repositories.GroceryItemRepository;
+import com.eazyplan.ia.domain.repositories.GroceryListRepository;
+import com.eazyplan.ia.infrastructure.database.DatabaseConfig;
 
 import java.util.List;
 import java.time.LocalDate;
