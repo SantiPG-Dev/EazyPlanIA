@@ -47,7 +47,10 @@ public class User {
         this.password = password;
     }
 
-    // Getters and setters
+    @NamedQuery(name = "existsByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+    @NamedQuery(name = "existsByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+    @NamedQuery(name = "findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }

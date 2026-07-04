@@ -25,32 +25,27 @@ public class Workout {
     private String workoutType;
     private String notes;
 
-    // Constructors
     public Workout() {}
 
     public Workout(User user) {
         this.user = user;
     }
 
+    @NamedQuery(name = "workout.findAllByUser", query = "SELECT w FROM Workout w WHERE w.user.id = :userId ORDER BY w.startTime DESC")
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
     public List<Exercise> getExercises() { return exercises; }
     public void setExercises(List<Exercise> exercises) { this.exercises = exercises; }
-
     public LocalDateTime getStartTime() { return startTime; }
     public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
-
     public LocalDateTime getEndTime() { return endTime; }
     public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
-
     public String getWorkoutType() { return workoutType; }
     public void setWorkoutType(String workoutType) { this.workoutType = workoutType; }
-
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
 }
