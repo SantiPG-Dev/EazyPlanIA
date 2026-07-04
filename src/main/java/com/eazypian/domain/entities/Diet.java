@@ -1,4 +1,4 @@
-package com.eazypian.domain.entities;
+package com.eazyplan.ia.domain.entities;
 
 import java.time.LocalDate;
 
