@@ -1,6 +1,6 @@
-package com.eazypian.domain.repositories;
+package com.eazyplan.ia.domain.repositories;
 
-import com.eazypian.domain.entities.Diet;
+import com.eazyplan.ia.domain.entities.Diet;
 
 import java.util.List;
 
