@@ -1,7 +1,7 @@
-package com.eazypian.domain.repositories;
+package com.eazyplan.ia.domain.repositories;
 
-import com.eazypian.domain.entities.Exercise;
-import com.eazypian.infrastructure.database.DatabaseConfig;
+import com.eazyplan.ia.domain.entities.Exercise;
+import com.eazyplan.ia.infrastructure.database.DatabaseConfig;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
