@@ -62,13 +62,10 @@ public class Diet {
         this.dailyWater = dailyWater;
     }
 
+    @NamedQuery(name = "diet.findAllByUser", query = "SELECT d FROM Diet d WHERE d.user.id = :userId ORDER BY d.startDate DESC")
+
     public enum DietType {
-        BALANCED,
-        LOW_CARBS,
-        HIGH_PROTEIN,
-        VEGAN,
-        KETO,
-        CUSTOM
+        BALANCED, LOW_CARBS, HIGH_PROTEIN, VEGAN, KETO, CUSTOM
     }
 
     // Getters and setters

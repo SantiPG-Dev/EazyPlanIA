@@ -21,7 +21,6 @@ public class GroceryItem {
     private boolean purchased;
     private boolean organic;
 
-    // Constructors
     public GroceryItem() {}
 
     public GroceryItem(String name, String category, int quantity, String unit) {
@@ -31,28 +30,23 @@ public class GroceryItem {
         this.unit = unit;
     }
 
+    @NamedQuery(name = "groceryItem.findAllByList", query = "SELECT gi FROM GroceryItem gi WHERE gi.groceryList.id = :listId ORDER BY gi.name")
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public GroceryList getGroceryList() { return groceryList; }
     public void setGroceryList(GroceryList groceryList) { this.groceryList = groceryList; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
-
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
-
     public String getUnit() { return unit; }
     public void setUnit(String unit) { this.unit = unit; }
-
     public boolean isPurchased() { return purchased; }
     public void setPurchased(boolean purchased) { this.purchased = purchased; }
-
     public boolean isOrganic() { return organic; }
     public void setOrganic(boolean organic) { this.organic = organic; }
 }

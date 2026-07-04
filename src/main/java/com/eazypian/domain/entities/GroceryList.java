@@ -23,7 +23,6 @@ public class GroceryList {
     private LocalDate createdAt;
     private boolean isPurchased;
 
-    // Constructors
     public GroceryList() {}
 
     public GroceryList(User user) {
@@ -31,19 +30,17 @@ public class GroceryList {
         this.createdAt = LocalDate.now();
     }
 
+    @NamedQuery(name = "groceryList.findAllByUser", query = "SELECT g FROM GroceryList g WHERE g.user.id = :userId ORDER BY g.createdAt DESC")
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
     public List<GroceryItem> getItems() { return items; }
     public void setItems(List<GroceryItem> items) { this.items = items; }
-
     public LocalDate getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
-
     public boolean isPurchased() { return isPurchased; }
-    public void setPurchased(boolean purchased) { isPurchased = purchased; }
+    public void setPurchased(boolean purchased) { this.isPurchased = purchased; }
 }
