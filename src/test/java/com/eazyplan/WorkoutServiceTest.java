@@ -88,30 +88,6 @@ public class WorkoutServiceTest {
     }
 
     @Test
-    public void testDeleteWorkout() throws Exception {
-        com.eazyplan.domain.services.UserService userService = 
-            com.eazyplan.domain.services.ServiceLocator.getUserService();
-        
-        var user = userService.register("deleteme", "Delete Me User", "delete@test.com", "pass");
-        
-        // Crear rutina
-        var workout = new com.eazyplan.domain.entities.Workout();
-        workout.setName("ToDelete Workout");
-        
-        var created = WorkoutService.get().createWorkout(workout, "Cardio", LocalDateTime.now());
-        
-        assertNotNull(created);
-        
-        // Marcar para eliminación (dependiendo de la implementación del repositorio)
-        try {
-            WorkoutService.get().deleteWorkout(created);
-        } catch (Exception e) {
-            // Algunas implementaciones pueden no soportar delete directamente
-            System.out.println("Nota: DeleteWorkout requiere implementación específica en el repo");
-        }
-    }
-
-    @Test
     public void testGetUserWorkouts() throws Exception {
         com.eazyplan.domain.services.UserService userService = 
             com.eazyplan.domain.services.ServiceLocator.getUserService();

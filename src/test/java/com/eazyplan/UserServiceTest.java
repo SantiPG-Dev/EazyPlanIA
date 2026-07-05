@@ -12,7 +12,6 @@ public class UserServiceTest {
     @BeforeAll
     public static void setUp() {
         // El DatabaseConfig se inicializa con EntityManagerFactory H2 in-memory
-        // Esto creará la tabla users automáticamente la primera vez que se usa
         System.out.println("Setup: DatabaseConfig ya está inicializado");
     }
 
@@ -124,7 +123,7 @@ public class UserServiceTest {
         var user2 = userService.register("user2", "Segundo", "two@test.com", "p2");
         var user3 = userService.register("user3", "Tercero", "three@test.com", "p3");
         
-        assertEquals(3, userService.existsByUsername("user1")); // true
+        assertTrue(userService.existsByUsername("user1"));
         assertTrue(userService.existsByUsername("user2"));
         assertTrue(userService.existsByUsername("user3"));
     }

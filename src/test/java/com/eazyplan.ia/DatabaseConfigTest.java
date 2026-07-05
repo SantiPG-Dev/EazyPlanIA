@@ -1,4 +1,4 @@
-package com.eazyplan.ia;
+package com.eazyplan;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,14 +16,14 @@ public class DatabaseConfigTest {
 
     @Test
     public void testDatabaseConfigExists() {
-        assertNotNull(com.eazyplan.ia.infrastructure.database.DatabaseConfig.class);
+        assertNotNull(com.eazyplan.infrastructure.database.DatabaseConfig.class);
         System.out.println("DatabaseConfig existe correctamente");
     }
 
     @Test
     public void testEntityManagerFactoryAccessible() throws Exception {
         try {
-            var emf = com.eazyplan.ia.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
+            var emf = com.eazyplan.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
             assertNotNull(emf, "EntityManagerFactory no debería ser null");
             
             // Obtener EntityManager para verificar que funciona
@@ -40,14 +40,14 @@ public class DatabaseConfigTest {
     @Test
     public void testH2DatabaseConnection() throws Exception {
         try {
-            var emf = com.eazyplan.ia.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
+            var emf = com.eazyplan.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
             
             jakarta.persistence.EntityManager em = emf.createEntityManager();
             jakarta.persistence.EntityTransaction tx = em.getTransaction();
             
             // Intentar crear una entidad simple para verificar conexión
-            com.eazyplan.ia.domain.entities.Role role = new com.eazyplan.ia.domain.entities.Role();
-            role.setRole(com.eazyplan.ia.domain.entities.Role.RoleType.USER);
+            com.eazyplan.domain.entities.Role role = new com.eazyplan.domain.entities.Role();
+            role.setRole(com.eazyplan.domain.entities.Role.RoleType.USER);
             
             try {
                 em.persist(role);
@@ -68,11 +68,11 @@ public class DatabaseConfigTest {
     @Test
     public void testDatabaseConfigClose() throws Exception {
         try {
-            com.eazyplan.ia.infrastructure.database.DatabaseConfig.close();
+            com.eazyplan.infrastructure.database.DatabaseConfig.close();
             
             // Verificar que la EntityManagerFactory ya no es accesible después de cerrar
             assertThrows(Exception.class, () -> {
-                var emf = com.eazyplan.ia.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
+                var emf = com.eazyplan.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
                 assertNotNull(emf);
             });
             
@@ -86,7 +86,7 @@ public class DatabaseConfigTest {
     @Test
     public void testPersistenceUnitConfiguration() {
         try {
-            var emf = com.eazyplan.ia.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
+            var emf = com.eazyplan.infrastructure.database.DatabaseConfig.getEntityManagerFactory();
             
             // Verificar que las entidades están configuradas correctamente en la persistence unit
             assertNotNull(emf);
