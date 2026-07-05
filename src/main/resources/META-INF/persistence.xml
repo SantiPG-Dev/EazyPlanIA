@@ -17,10 +17,10 @@
         <class>com.eazyplan.domain.entities.Role</class>
 
         <properties>
-            <!-- H2 in-memory -->
+            <!-- H2 archivo persistente dentro del proyecto -->
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:h2:mem:eazypian;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"/>
+                      value="jdbc:h2:./db/eazypian;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE"/>
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 
