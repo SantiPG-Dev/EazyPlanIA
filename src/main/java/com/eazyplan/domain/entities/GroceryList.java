@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "groceryList.findAllByUser", query = "SELECT g FROM GroceryList g WHERE g.user.id = :userId ORDER BY g.createdAt DESC")
+})
 @Table(name = "grocery_lists")
 public class GroceryList {
 
@@ -29,8 +32,6 @@ public class GroceryList {
         this.user = user;
         this.createdAt = LocalDate.now();
     }
-
-    @NamedQuery(name = "groceryList.findAllByUser", query = "SELECT g FROM GroceryList g WHERE g.user.id = :userId ORDER BY g.createdAt DESC")
 
     // Getters and Setters
     public Long getId() { return id; }

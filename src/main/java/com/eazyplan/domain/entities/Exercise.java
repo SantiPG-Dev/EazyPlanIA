@@ -3,6 +3,9 @@ package com.eazyplan.domain.entities;
 import jakarta.persistence.*;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "exercise.findAllByWorkout", query = "SELECT e FROM Exercise e WHERE e.workout.id = :workoutId ORDER BY e.sets DESC")
+})
 @Table(name = "exercises")
 public class Exercise {
 
@@ -30,8 +33,6 @@ public class Exercise {
         this.reps = reps;
         this.weight = weight;
     }
-
-    @NamedQuery(name = "exercise.findAllByWorkout", query = "SELECT e FROM Exercise e WHERE e.workout.id = :workoutId ORDER BY e.sets DESC")
 
     // Getters and Setters
     public Long getId() { return id; }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "macroLog.findAllByUser", query = "SELECT m FROM MacroLog m WHERE m.user.id = :userId ORDER BY m.date DESC")
+})
 @Table(name = "macro_logs")
 public class MacroLog {
 
@@ -32,8 +35,6 @@ public class MacroLog {
         this.diet = diet;
         this.date = date;
     }
-
-    @NamedQuery(name = "macroLog.findAllByUser", query = "SELECT m FROM MacroLog m WHERE m.user.id = :userId ORDER BY m.date DESC")
 
     // Getters and Setters
     public Long getId() { return id; }

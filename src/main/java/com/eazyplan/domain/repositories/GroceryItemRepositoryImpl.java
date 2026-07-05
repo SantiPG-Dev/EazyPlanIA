@@ -38,7 +38,7 @@ public class GroceryItemRepositoryImpl implements GroceryItemRepository {
     }
 
     public void delete(GroceryItem groceryItem) {
-        GroceryItem existing = groceryItemRepositoryImpl.findById(groceryItem.getId());
+        GroceryItem existing = findById(groceryItem.getId());
         entityManager.remove(existing);
     }
 

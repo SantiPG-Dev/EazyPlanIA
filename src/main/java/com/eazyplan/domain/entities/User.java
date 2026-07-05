@@ -6,6 +6,11 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "existsByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "existsByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+})
 @Table(name = "users")
 public class User {
 
@@ -46,10 +51,6 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
-    @NamedQuery(name = "existsByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
-    @NamedQuery(name = "existsByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
-    @NamedQuery(name = "findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

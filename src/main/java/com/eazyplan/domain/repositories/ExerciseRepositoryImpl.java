@@ -38,7 +38,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     }
 
     public void delete(Exercise exercise) {
-        Exercise existing = exerciseRepositoryImpl.findById(exercise.getId());
+        Exercise existing = findById(exercise.getId());
         entityManager.remove(existing);
     }
 

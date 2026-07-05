@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public void delete(User user) {
-        User existing = userRepositoryImpl.findById(user.getId());
+        User existing = findById(user.getId());
         entityManager.remove(existing);
     }
 

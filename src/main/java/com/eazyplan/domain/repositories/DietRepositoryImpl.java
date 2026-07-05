@@ -38,7 +38,7 @@ public class DietRepositoryImpl implements DietRepository {
     }
 
     public void delete(Diet diet) {
-        Diet existing = dietRepositoryImpl.findById(diet.getId());
+        Diet existing = findById(diet.getId());
         entityManager.remove(existing);
     }
 

@@ -5,6 +5,9 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "micro_logs")
+@NamedQueries({
+    @NamedQuery(name = "microLog.findAllByUser", query = "SELECT m FROM MicroLog m WHERE m.user.id = :userId ORDER BY m.date DESC")
+})
 public class MicroLog {
 
     @Id
@@ -29,8 +32,6 @@ public class MicroLog {
         this.user = user;
         this.date = date;
     }
-
-    @NamedQuery(name = "microLog.findAllByUser", query = "SELECT m FROM MicroLog m WHERE m.user.id = :userId ORDER BY m.date DESC")
 
     // Getters and Setters
     public Long getId() { return id; }

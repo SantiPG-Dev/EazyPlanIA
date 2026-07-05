@@ -6,9 +6,10 @@ import com.eazyplan.infrastructure.database.DatabaseConfig;
 
 import java.time.LocalDate;
 import java.util.List;
+import com.eazyplan.domain.repositories.MicroLogRepositoryImpl;
 
 public class MicroLogService {
-    private final MicroLogRepository microRepo = MicroLogRepository.get();
+    private final MicroLogRepository microRepo = MicroLogRepositoryImpl.get();
 
     public List<MicroLog> getUserLogs(Long userId) {
         return microRepo.findAllByUser(userId);

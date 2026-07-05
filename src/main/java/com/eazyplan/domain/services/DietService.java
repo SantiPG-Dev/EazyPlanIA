@@ -3,9 +3,10 @@ package com.eazyplan.domain.services;
 import com.eazyplan.domain.entities.Diet;
 import com.eazyplan.domain.repositories.DietRepository;
 import java.util.List;
+import com.eazyplan.domain.repositories.DietRepositoryImpl;
 
 public class DietService {
-    private final DietRepository dietRepo = DietRepository.get();
+    private final DietRepository dietRepo = DietRepositoryImpl.get();
 
     public List<Diet> getUserDiets(Long userId) { return dietRepo.findAllByUser(userId); }
     public Diet createDiet(Diet diet, UserService userService, Long userId) { 

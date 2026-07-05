@@ -3,6 +3,9 @@ package com.eazyplan.domain.entities;
 import jakarta.persistence.*;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "groceryItem.findAllByList", query = "SELECT gi FROM GroceryItem gi WHERE gi.groceryList.id = :listId ORDER BY gi.name")
+})
 @Table(name = "grocery_items")
 public class GroceryItem {
 
@@ -29,8 +32,6 @@ public class GroceryItem {
         this.quantity = quantity;
         this.unit = unit;
     }
-
-    @NamedQuery(name = "groceryItem.findAllByList", query = "SELECT gi FROM GroceryItem gi WHERE gi.groceryList.id = :listId ORDER BY gi.name")
 
     // Getters and Setters
     public Long getId() { return id; }

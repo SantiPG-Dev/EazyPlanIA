@@ -6,9 +6,13 @@ import com.eazyplan.infrastructure.database.DatabaseConfig;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import com.eazyplan.domain.repositories.WorkoutRepositoryImpl;
+import com.eazyplan.domain.repositories.ExerciseRepositoryImpl;
+import com.eazyplan.domain.repositories.ExerciseRepository;
 
 public class WorkoutService {
-    private final WorkoutRepository workoutRepo = WorkoutRepository.get();
+    private final WorkoutRepository workoutRepo = WorkoutRepositoryImpl.get();
+    private final ExerciseRepository exerciseRepo = ExerciseRepositoryImpl.get();
     
     public List<Workout> getUserWorkouts(Long userId) {
         return workoutRepo.findAllByUser(userId);
@@ -24,7 +28,7 @@ public class WorkoutService {
 
     public void completeExercise(com.eazyplan.domain.entities.Exercise exercise) {
         exercise.setCompleted(true);
-        workoutRepo.get().save(exercise); // indirect via ExerciseRepository
+        exerciseRepo.save(exercise);
     }
 
     public void endWorkout(Workout workout, LocalDateTime endTime) {

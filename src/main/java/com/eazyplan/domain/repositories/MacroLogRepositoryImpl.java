@@ -38,7 +38,7 @@ public class MacroLogRepositoryImpl implements MacroLogRepository {
     }
 
     public void delete(MacroLog macroLog) {
-        MacroLog existing = macroLogRepositoryImpl.findById(macroLog.getId());
+        MacroLog existing = findById(macroLog.getId());
         entityManager.remove(existing);
     }
 

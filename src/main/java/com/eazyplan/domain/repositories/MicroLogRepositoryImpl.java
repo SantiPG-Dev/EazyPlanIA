@@ -38,7 +38,7 @@ public class MicroLogRepositoryImpl implements MicroLogRepository {
     }
 
     public void delete(MicroLog microLog) {
-        MicroLog existing = microLogRepositoryImpl.findById(microLog.getId());
+        MicroLog existing = findById(microLog.getId());
         entityManager.remove(existing);
     }
 

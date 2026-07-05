@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "workout.findAllByUser", query = "SELECT w FROM Workout w WHERE w.user.id = :userId ORDER BY w.startTime DESC")
+})
 @Table(name = "workouts")
 public class Workout {
 
@@ -30,8 +33,6 @@ public class Workout {
     public Workout(User user) {
         this.user = user;
     }
-
-    @NamedQuery(name = "workout.findAllByUser", query = "SELECT w FROM Workout w WHERE w.user.id = :userId ORDER BY w.startTime DESC")
 
     // Getters and Setters
     public Long getId() { return id; }

@@ -6,9 +6,10 @@ import com.eazyplan.infrastructure.database.DatabaseConfig;
 
 import java.time.LocalDate;
 import java.util.List;
+import com.eazyplan.domain.repositories.MacroLogRepositoryImpl;
 
 public class MacroLogService {
-    private final MacroLogRepository macroRepo = MacroLogRepository.get();
+    private final MacroLogRepository macroRepo = MacroLogRepositoryImpl.get();
 
     public List<MacroLog> getUserLogs(Long userId) {
         return macroRepo.findAllByUser(userId);
@@ -16,7 +17,7 @@ public class MacroLogService {
 
     public MacroLog logMacros(MacroLog entry, DietService dietService, Long userId) {
         entry.setUser(null); // will be set via relationship
-        entry.setDiet(dietService.calculateMacros(entry.getDiet().getDietType(), 2000, userId));
+        entry.setDiet(dietService.calculateMacros(entry.getDiet().getDietType(), 2000f));
         macroRepo.save(entry);
         return entry;
     }
