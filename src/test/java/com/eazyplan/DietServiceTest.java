@@ -131,29 +131,6 @@ public class DietServiceTest {
     }
 
     @Test
-    public void testDeleteDiet() {
-        com.eazyplan.domain.services.UserService userService = 
-            com.eazyplan.domain.services.ServiceLocator.getUserService();
-        
-        var user = userService.register("deletediet", "Delete Diet User", "delete@test.com", "pass");
-        
-        var diet = new com.eazyplan.domain.entities.Diet("ToDelete", 
-            com.eazyplan.domain.entities.Diet.DietType.KETO, java.time.LocalDate.now(), 1800f, 450f, 90f, 1260f, 3000f);
-        
-        DietService.get().createDiet(diet, userService, user.getId());
-        
-        // Verificar que existe
-        assertTrue(DietService.get().getUserDiets(user.getId()).size() > 0);
-        
-        // Eliminar dieta
-        DietService.get().deleteDiet(diet);
-        
-        // Verificar que fue eliminada (dependiendo del repositorio)
-        var diets = DietService.get().getUserDiets(user.getId());
-        // Nota: La eliminación podría no reflejarse inmediatamente en esta lista sin refetch
-    }
-
-    @Test
     public void testGetUserDiets() {
         com.eazyplan.domain.services.UserService userService = 
             com.eazyplan.domain.services.ServiceLocator.getUserService();

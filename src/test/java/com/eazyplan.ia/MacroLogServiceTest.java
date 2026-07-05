@@ -1,4 +1,4 @@
-package com.eazyplan.ia;
+package com.eazyplan;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,13 @@ public class MacroLogServiceTest {
 
     @Test
     public void testCreateMacroLog() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("macrologuser", "Macro Log User", "macrolog@test.com", "pass");
         
         // Crear entrada de macros (dependiendo de la implementación)
-        var entry = new com.eazyplan.ia.domain.entities.MacroLog(user, java.time.LocalDate.now(), 2000f, 600f, 800f, 600f);
+        var entry = new com.eazyplan.domain.entities.MacroLog(user, java.time.LocalDate.now(), 2000f, 600f, 800f, 600f);
         
         // Guardar en el repositorio directamente (dependiendo de la implementación)
         try {
@@ -38,15 +38,15 @@ public class MacroLogServiceTest {
 
     @Test
     public void testGetUserMacroLogs() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("multiloguser", "Multi Log User", "multilog@test.com", "pass");
         
         // Crear varias entradas de macros (dependiendo de la implementación)
         for (int i = 0; i < 3; i++) {
             try {
-                var entry = new com.eazyplan.ia.domain.entities.MacroLog(user, java.time.LocalDate.now(), 2000f, 600f, 800f, 600f);
+                var entry = new com.eazyplan.domain.entities.MacroLog(user, java.time.LocalDate.now(), 2000f, 600f, 800f, 600f);
                 MacroLogService.get().logMacros(entry, null, user.getId());
             } catch (Exception e) {
                 System.out.println("Nota: Crear macro log requiere implementación específica del repo");
@@ -61,14 +61,14 @@ public class MacroLogServiceTest {
 
     @Test
     public void testDeleteMacroLog() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("deletemacrol", "Delete Macro Log User", "deletemacrolog@test.com", "pass");
         
         // Crear entrada de macros (dependiendo de la implementación)
         try {
-            var entry = new com.eazyplan.ia.domain.entities.MacroLog(user, java.time.LocalDate.now(), 2000f, 600f, 800f, 600f);
+            var entry = new com.eazyplan.domain.entities.MacroLog(user, java.time.LocalDate.now(), 2000f, 600f, 800f, 600f);
             MacroLogService.get().logMacros(entry, null, user.getId());
             
             assertNotNull(entry.getId());
@@ -84,8 +84,8 @@ public class MacroLogServiceTest {
 
     @Test
     public void testFindByDateRange() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("daterangelog", "Date Range Log User", "daterange@test.com", "pass");
         
@@ -93,7 +93,7 @@ public class MacroLogServiceTest {
         try {
             for (int i = 0; i < 3; i++) {
                 var date = java.time.LocalDate.now().plusDays(i);
-                var entry = new com.eazyplan.ia.domain.entities.MacroLog(user, date, 2000f, 600f, 800f, 600f);
+                var entry = new com.eazyplan.domain.entities.MacroLog(user, date, 2000f, 600f, 800f, 600f);
                 MacroLogService.get().logMacros(entry, null, user.getId());
             }
             
@@ -111,13 +111,13 @@ public class MacroLogServiceTest {
 
     @Test
     public void testMacroLogFields() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("fieldsuser", "Fields User", "fields@test.com", "pass");
         
         // Verificar que las entidades MacroLog tienen los campos necesarios
-        assertNotNull(com.eazyplan.ia.domain.entities.MacroLog.class);
+        assertNotNull(com.eazyplan.domain.entities.MacroLog.class);
         
         System.out.println("Nota: MacroLogServiceTests completados - verificación de estructura");
     }

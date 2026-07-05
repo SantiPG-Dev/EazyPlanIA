@@ -1,4 +1,4 @@
-package com.eazyplan.ia;
+package com.eazyplan;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,13 @@ public class GroceryListServiceTest {
 
     @Test
     public void testCreateGroceryList() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("groceryuser", "Grocery User", "grocery@test.com", "pass");
         
         // Crear lista de compras
-        var list = new com.eazyplan.ia.domain.entities.GroceryList(user);
+        var list = new com.eazyplan.domain.entities.GroceryList(user);
         
         var created = GroceryListService.get().createList(list, user);
         
@@ -33,20 +33,20 @@ public class GroceryListServiceTest {
     @Test
     public void testCreateListWithoutUser() {
         assertThrows(IllegalArgumentException.class, () -> {
-            var list = new com.eazyplan.ia.domain.entities.GroceryList();
+            var list = new com.eazyplan.domain.entities.GroceryList();
             GroceryListService.get().createList(list, null);
         });
     }
 
     @Test
     public void testSetPurchasedTrue() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("purchaseduser", "Purchased User", "purchased@test.com", "pass");
         
         // Crear lista de compras
-        var list = new com.eazyplan.ia.domain.entities.GroceryList(user);
+        var list = new com.eazyplan.domain.entities.GroceryList(user);
         GroceryListService.get().createList(list, user);
         
         // Marcar como comprada
@@ -57,13 +57,13 @@ public class GroceryListServiceTest {
 
     @Test
     public void testGroceryListItems() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("itemsuser", "Items User", "items@test.com", "pass");
         
         // Crear lista de compras
-        var list = new com.eazyplan.ia.domain.entities.GroceryList(user);
+        var list = new com.eazyplan.domain.entities.GroceryList(user);
         GroceryListService.get().createList(list, user);
         
         assertNotNull(list.getItems());
@@ -71,8 +71,8 @@ public class GroceryListServiceTest {
         
         // Agregar items (dependiendo de la implementación del repositorio)
         try {
-            var item1 = new com.eazyplan.ia.domain.entities.GroceryItem("Pan", true);
-            var item2 = new com.eazyplan.ia.domain.entities.GroceryItem("Leche", false);
+            var item1 = new com.eazyplan.domain.entities.GroceryItem("Pan", true);
+            var item2 = new com.eazyplan.domain.entities.GroceryItem("Leche", false);
             
             // Los items se guardan en el repositorio directamente
             System.out.println("Nota: Agregar items requiere implementación específica del repo");
@@ -83,13 +83,13 @@ public class GroceryListServiceTest {
 
     @Test
     public void testDeleteGroceryList() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("deletegrocery", "Delete Grocery User", "deletetest@test.com", "pass");
         
         // Crear lista de compras
-        var list = new com.eazyplan.ia.domain.entities.GroceryList(user);
+        var list = new com.eazyplan.domain.entities.GroceryList(user);
         GroceryListService.get().createList(list, user);
         
         assertNotNull(list.getId());
@@ -105,14 +105,14 @@ public class GroceryListServiceTest {
 
     @Test
     public void testGetUserGroceryLists() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("multilists", "Multi Lists User", "multi@test.com", "pass");
         
         // Crear varias listas de compras
         for (int i = 0; i < 3; i++) {
-            var list = new com.eazyplan.ia.domain.entities.GroceryList(user);
+            var list = new com.eazyplan.domain.entities.GroceryList(user);
             GroceryListService.get().createList(list, user);
         }
         
@@ -123,13 +123,13 @@ public class GroceryListServiceTest {
 
     @Test
     public void testGroceryListCreatedAt() throws Exception {
-        com.eazyplan.ia.domain.services.UserService userService = 
-            com.eazyplan.ia.domain.services.ServiceLocator.getUserService();
+        com.eazyplan.domain.services.UserService userService = 
+            com.eazyplan.domain.services.ServiceLocator.getUserService();
         
         var user = userService.register("createdatuser", "Created At User", "createdat@test.com", "pass");
         
         // Crear lista de compras (debería establecer createdAt)
-        var list = new com.eazyplan.ia.domain.entities.GroceryList(user);
+        var list = new com.eazyplan.domain.entities.GroceryList(user);
         GroceryListService.get().createList(list, user);
         
         assertNotNull(list.getCreatedAt()); // Debería ser LocalDate.now()
