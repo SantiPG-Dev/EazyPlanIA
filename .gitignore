@@ -32,3 +32,9 @@ Thumbs.db
 
 # Eclipse metadata
 .metadata/
+
+# Database files (H2)
+db/
+*.h2.db
+*.trace.db
+*.lock.db
