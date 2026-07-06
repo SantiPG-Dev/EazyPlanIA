@@ -9,6 +9,7 @@
 
     <!-- Header -->
     <HBox spacing="16" alignment="CENTER_LEFT" style="-fx-background-color: #f5f5f5; -fx-padding: 12;">
+        <Button text="← Back" onAction="#goBack"/>
         <Label text="Mis Rutinas" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
         <Button text="+ Nueva Rutina" fx:id="newWorkoutButton" onAction="#handleNewWorkout"/>
     </HBox>
