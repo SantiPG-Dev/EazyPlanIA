@@ -16,11 +16,11 @@
     <!-- Tabla de rutinas -->
     <TableView fx:id="workoutsTable" VBox.vgrow="ALWAYS">
         <columns>
-            < TableColumn fx:id="nameColumn" text="Nombre" prefWidth="180" />
-            < TableColumn fx:id="typeColumn" text="Tipo" prefWidth="120" />
-            < TableColumn fx:id="startTimeColumn" text="Inicio" prefWidth="120" />
-            < TableColumn fx:id="endTimeColumn" text="Fin" prefWidth="120" />
-            < TableColumn fx:id="exercisesCountColumn" text="Ejercicios" prefWidth="100" />
+            <TableColumn fx:id="nameColumn" text="Nombre" prefWidth="180" />
+            <TableColumn fx:id="typeColumn" text="Tipo" prefWidth="120" />
+            <TableColumn fx:id="startTimeColumn" text="Inicio" prefWidth="120" />
+            <TableColumn fx:id="endTimeColumn" text="Fin" prefWidth="120" />
+            <TableColumn fx:id="exercisesCountColumn" text="Ejercicios" prefWidth="100" />
         </columns>
     </TableView>
 

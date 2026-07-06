@@ -9,44 +9,86 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-    private final EntityManager entityManager = DatabaseConfig.getEntityManagerFactory().createEntityManager();
 
+    @Override
     public User findById(Long id) {
-        return Optional.ofNullable(entityManager.find(User.class, id))
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + id));
-    }
-
-    public boolean existsByUsername(String username) {
-        TypedQuery<Boolean> query = entityManager.createNamedQuery("existsByUsername", Boolean.class);
-        query.setParameter("username", username);
-        return query.getSingleResult();
-    }
-
-    public boolean existsByEmail(String email) {
-        TypedQuery<Boolean> query = entityManager.createNamedQuery("existsByEmail", Boolean.class);
-        query.setParameter("email", email);
-        return query.getSingleResult();
-    }
-
-    public User findByUsername(String username) {
-        TypedQuery<User> query = entityManager.createNamedQuery("findByUsername", User.class);
-        query.setParameter("username", username);
-        return query.getSingleResult();
-    }
-
-    public void save(User user) {
-        if (user.getId() == null) {
-            entityManager.persist(user);
-        } else {
-            entityManager.merge(user);
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(em.find(User.class, id))
+                    .orElseThrow(() -> new IllegalArgumentException("User not found: " + id));
+        } finally {
+            em.close();
         }
     }
 
-    public void delete(User user) {
-        User existing = findById(user.getId());
-        entityManager.remove(existing);
+    @Override
+    public boolean existsByUsername(String username) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<Long> query = em.createNamedQuery("existsByUsername", Long.class);
+            query.setParameter("username", username);
+            return query.getSingleResult() > 0;
+        } finally {
+            em.close();
+        }
     }
 
-    private static final UserRepositoryImpl instance = new UserRepositoryImpl();
-    public static UserRepository get() { return instance; }
+    @Override
+    public boolean existsByEmail(String email) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<Long> query = em.createNamedQuery("existsByEmail", Long.class);
+            query.setParameter("email", email);
+            return query.getSingleResult() > 0;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<User> query = em.createNamedQuery("findByUsername", User.class);
+            query.setParameter("username", username);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void save(User user) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (user.getId() == null) {
+                em.persist(user);
+            } else {
+                em.merge(user);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void delete(User user) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            User existing = em.find(User.class, user.getId());
+            if (existing != null) em.remove(existing);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

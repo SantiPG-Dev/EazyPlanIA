@@ -5,7 +5,7 @@ import com.eazyplan.domain.repositories.UserRepository;
 import com.eazyplan.domain.repositories.UserRepositoryImpl;
 
 public class UserService {
-    private final UserRepository userRepository = UserRepositoryImpl.get();
+    private final UserRepository userRepository = new UserRepositoryImpl();
     
     public User register(String username, String name, String email, String password) throws Exception {
         if (userRepository.existsByUsername(username)) throw new IllegalArgumentException("Username already exists");

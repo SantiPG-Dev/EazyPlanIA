@@ -9,39 +9,75 @@ import java.util.List;
 import java.util.Optional;
 
 public class WorkoutRepositoryImpl implements WorkoutRepository {
-    private final EntityManager entityManager = DatabaseConfig.getEntityManagerFactory().createEntityManager();
 
+    @Override
     public List<Workout> findAllByUser(Long userId) {
-        TypedQuery<Workout> query = entityManager.createNamedQuery("workout.findAllByUser", Workout.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
-    }
-
-    public List<Workout> findByIds(List<Long> ids) {
-        return Optional.ofNullable(ids).orElse(List.of()).stream()
-                .map(id -> entityManager.find(Workout.class, id))
-                .filter(w -> w != null)
-                .toList();
-    }
-
-    public Workout findById(Long id) {
-        return Optional.ofNullable(entityManager.find(Workout.class, id))
-                .orElseThrow(() -> new IllegalArgumentException("Workout not found: " + id));
-    }
-
-    public void save(Workout workout) {
-        if (workout.getId() == null) {
-            entityManager.persist(workout);
-        } else {
-            entityManager.merge(workout);
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<Workout> query = em.createNamedQuery("workout.findAllByUser", Workout.class);
+            query.setParameter("userId", userId);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 
-    public void delete(Workout workout) {
-        Workout existing = findById(workout.getId());
-        entityManager.remove(existing);
+    @Override
+    public List<Workout> findByIds(List<Long> ids) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(ids).orElse(List.of()).stream()
+                    .map(id -> em.find(Workout.class, id))
+                    .filter(w -> w != null)
+                    .toList();
+        } finally {
+            em.close();
+        }
     }
 
-    private static final WorkoutRepositoryImpl instance = new WorkoutRepositoryImpl();
-    public static WorkoutRepository get() { return instance; }
+    @Override
+    public Workout findById(Long id) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(em.find(Workout.class, id))
+                    .orElseThrow(() -> new IllegalArgumentException("Workout not found: " + id));
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void save(Workout workout) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (workout.getId() == null) {
+                em.persist(workout);
+            } else {
+                em.merge(workout);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void delete(Workout workout) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Workout existing = em.find(Workout.class, workout.getId());
+            if (existing != null) em.remove(existing);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

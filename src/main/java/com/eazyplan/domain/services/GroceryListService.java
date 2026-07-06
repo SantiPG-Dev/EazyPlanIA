@@ -13,8 +13,8 @@ import com.eazyplan.domain.repositories.GroceryItemRepositoryImpl;
 import com.eazyplan.domain.entities.User;
 
 public class GroceryListService {
-    private final GroceryListRepository groceryRepo = GroceryListRepositoryImpl.get();
-    private final GroceryItemRepository itemRepo = GroceryItemRepositoryImpl.get();
+    private final GroceryListRepository groceryRepo = new GroceryListRepositoryImpl();
+    private final GroceryItemRepository itemRepo = new GroceryItemRepositoryImpl();
 
     public List<GroceryList> getUserLists(Long userId) {
         return groceryRepo.findAllByUser(userId);

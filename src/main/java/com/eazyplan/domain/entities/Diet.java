@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "diets")
+@NamedQuery(name = "diet.findAllByUser", query = "SELECT d FROM Diet d WHERE d.user.id = :userId ORDER BY d.startDate DESC")
 public class Diet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -61,8 +62,6 @@ public class Diet {
         this.dailyFats = dailyFats;
         this.dailyWater = dailyWater;
     }
-
-    @NamedQuery(name = "diet.findAllByUser", query = "SELECT d FROM Diet d WHERE d.user.id = :userId ORDER BY d.startDate DESC")
 
     public enum DietType {
         BALANCED, LOW_CARBS, HIGH_PROTEIN, VEGAN, KETO, CUSTOM
