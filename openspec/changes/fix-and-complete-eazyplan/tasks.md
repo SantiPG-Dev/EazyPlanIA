@@ -62,7 +62,8 @@ Chain strategy: stacked-to-main
 - [x] 3.11 `mvn compile` — clean, zero errors
 - [x] 3.12 `mvn test` — all tests pass (6/6, 0 failures)
 
-## Phase 4: Verification
+## Phase 4: Verification + Fixes
 
-- [ ] 4.1 `mvn test` — zero failures
+- [x] 4.1 `mvn test` — zero failures
 - [ ] 4.2 Smoke test: app starts → login → dashboard → nav to workout/grocery/diet
+- [x] 4.3 W1 fix: `delete()` throws `IllegalArgumentException` for nonexistent entities in all 8 repos

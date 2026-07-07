@@ -141,10 +141,10 @@ None.
 
 ### WARNING
 
-| # | Spec/Design | Found | Should Be |
-|---|-------------|-------|-----------|
-| W1 | repository-pattern spec — "Delete nonexistent entity: THEN IllegalArgumentException is thrown and the transaction rolls back" | All 8 repos: `delete()` silently no-ops when entity not found (`if (existing != null) em.remove`). No exception thrown. | `throw new IllegalArgumentException("Entity not found: " + id)` when `existing == null` |
-| W2 | tasks.md 4.2 — Smoke test | Smoke test not executed (manual step requiring GUI environment) | Run app → login → dashboard → navigate to all views |
+| # | Spec/Design | Found | Should Be | Status |
+|---|-------------|-------|-----------|--------|
+| W1 | repository-pattern spec — "Delete nonexistent entity: THEN IllegalArgumentException is thrown and the transaction rolls back" | ~~All 8 repos: `delete()` silently no-ops when entity not found~~ | ✅ **FIXED** — All 8 repos now throw `IllegalArgumentException("Entity not found: " + id)` when entity not found | Resolved |
+| W2 | tasks.md 4.2 — Smoke test | Smoke test not executed (manual step requiring GUI environment) | Run app → login → dashboard → navigate to all views | Pending |
 
 ### SUGGESTION
 
