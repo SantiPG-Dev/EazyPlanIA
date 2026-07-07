@@ -71,7 +71,8 @@ public class DietRepositoryImpl implements DietRepository {
         try {
             em.getTransaction().begin();
             Diet existing = em.find(Diet.class, diet.getId());
-            if (existing != null) em.remove(existing);
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + diet.getId());
+            em.remove(existing);
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();

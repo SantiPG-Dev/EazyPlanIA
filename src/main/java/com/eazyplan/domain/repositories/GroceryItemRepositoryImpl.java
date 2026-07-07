@@ -71,7 +71,8 @@ public class GroceryItemRepositoryImpl implements GroceryItemRepository {
         try {
             em.getTransaction().begin();
             GroceryItem existing = em.find(GroceryItem.class, groceryItem.getId());
-            if (existing != null) em.remove(existing);
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + groceryItem.getId());
+            em.remove(existing);
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();

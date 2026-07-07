@@ -71,7 +71,8 @@ public class MicroLogRepositoryImpl implements MicroLogRepository {
         try {
             em.getTransaction().begin();
             MicroLog existing = em.find(MicroLog.class, microLog.getId());
-            if (existing != null) em.remove(existing);
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + microLog.getId());
+            em.remove(existing);
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();

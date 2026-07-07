@@ -71,7 +71,8 @@ public class WorkoutRepositoryImpl implements WorkoutRepository {
         try {
             em.getTransaction().begin();
             Workout existing = em.find(Workout.class, workout.getId());
-            if (existing != null) em.remove(existing);
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + workout.getId());
+            em.remove(existing);
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();

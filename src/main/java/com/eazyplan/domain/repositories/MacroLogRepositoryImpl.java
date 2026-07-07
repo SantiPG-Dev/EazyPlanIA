@@ -71,7 +71,8 @@ public class MacroLogRepositoryImpl implements MacroLogRepository {
         try {
             em.getTransaction().begin();
             MacroLog existing = em.find(MacroLog.class, macroLog.getId());
-            if (existing != null) em.remove(existing);
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + macroLog.getId());
+            em.remove(existing);
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();

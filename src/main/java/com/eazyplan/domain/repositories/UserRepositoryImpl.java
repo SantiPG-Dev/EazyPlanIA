@@ -82,7 +82,8 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             em.getTransaction().begin();
             User existing = em.find(User.class, user.getId());
-            if (existing != null) em.remove(existing);
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + user.getId());
+            em.remove(existing);
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
