@@ -28,3 +28,13 @@ out/
 # OS
 Thumbs.db
 .DS_Store
+
+
+# Eclipse metadata
+.metadata/
+
+# Database files (H2)
+db/
+*.h2.db
+*.trace.db
+*.lock.db

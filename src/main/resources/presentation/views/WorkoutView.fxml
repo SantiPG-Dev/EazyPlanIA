@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.eazyplan.presentation.controllers.WorkoutController">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox spacing="16" alignment="CENTER_LEFT" style="-fx-background-color: #f5f5f5; -fx-padding: 12;">
+        <Button text="← Back" onAction="#goBack"/>
+        <Label text="Mis Rutinas" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+        <Button text="+ Nueva Rutina" fx:id="newWorkoutButton" onAction="#handleNewWorkout"/>
+    </HBox>
+
+    <!-- Tabla de rutinas -->
+    <TableView fx:id="workoutsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Nombre" prefWidth="180" />
+            <TableColumn fx:id="typeColumn" text="Tipo" prefWidth="120" />
+            <TableColumn fx:id="startTimeColumn" text="Inicio" prefWidth="120" />
+            <TableColumn fx:id="endTimeColumn" text="Fin" prefWidth="120" />
+            <TableColumn fx:id="exercisesCountColumn" text="Ejercicios" prefWidth="100" />
+        </columns>
+    </TableView>
+
+</VBox>
