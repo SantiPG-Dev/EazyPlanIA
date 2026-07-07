@@ -9,39 +9,76 @@ import java.util.List;
 import java.util.Optional;
 
 public class MicroLogRepositoryImpl implements MicroLogRepository {
-    private final EntityManager entityManager = DatabaseConfig.getEntityManagerFactory().createEntityManager();
 
+    @Override
     public List<MicroLog> findAllByUser(Long userId) {
-        TypedQuery<MicroLog> query = entityManager.createNamedQuery("microLog.findAllByUser", MicroLog.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
-    }
-
-    public List<MicroLog> findByIds(List<Long> ids) {
-        return Optional.ofNullable(ids).orElse(List.of()).stream()
-                .map(id -> entityManager.find(MicroLog.class, id))
-                .filter(m -> m != null)
-                .toList();
-    }
-
-    public MicroLog findById(Long id) {
-        return Optional.ofNullable(entityManager.find(MicroLog.class, id))
-                .orElseThrow(() -> new IllegalArgumentException("Micro log not found: " + id));
-    }
-
-    public void save(MicroLog microLog) {
-        if (microLog.getId() == null) {
-            entityManager.persist(microLog);
-        } else {
-            entityManager.merge(microLog);
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<MicroLog> query = em.createNamedQuery("microLog.findAllByUser", MicroLog.class);
+            query.setParameter("userId", userId);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 
-    public void delete(MicroLog microLog) {
-        MicroLog existing = findById(microLog.getId());
-        entityManager.remove(existing);
+    @Override
+    public List<MicroLog> findByIds(List<Long> ids) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(ids).orElse(List.of()).stream()
+                    .map(id -> em.find(MicroLog.class, id))
+                    .filter(m -> m != null)
+                    .toList();
+        } finally {
+            em.close();
+        }
     }
 
-    private static final MicroLogRepositoryImpl instance = new MicroLogRepositoryImpl();
-    public static MicroLogRepository get() { return instance; }
+    @Override
+    public MicroLog findById(Long id) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(em.find(MicroLog.class, id))
+                    .orElseThrow(() -> new IllegalArgumentException("Micro log not found: " + id));
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void save(MicroLog microLog) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (microLog.getId() == null) {
+                em.persist(microLog);
+            } else {
+                em.merge(microLog);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void delete(MicroLog microLog) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            MicroLog existing = em.find(MicroLog.class, microLog.getId());
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + microLog.getId());
+            em.remove(existing);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

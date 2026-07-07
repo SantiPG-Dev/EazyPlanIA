@@ -9,39 +9,76 @@ import java.util.List;
 import java.util.Optional;
 
 public class DietRepositoryImpl implements DietRepository {
-    private final EntityManager entityManager = DatabaseConfig.getEntityManagerFactory().createEntityManager();
 
+    @Override
     public List<Diet> findAllByUser(Long userId) {
-        TypedQuery<Diet> query = entityManager.createNamedQuery("diet.findAllByUser", Diet.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
-    }
-
-    public List<Diet> findByIds(List<Long> ids) {
-        return Optional.ofNullable(ids).orElse(List.of()).stream()
-                .map(id -> entityManager.find(Diet.class, id))
-                .filter(d -> d != null)
-                .toList();
-    }
-
-    public Diet findById(Long id) {
-        return Optional.ofNullable(entityManager.find(Diet.class, id))
-                .orElseThrow(() -> new IllegalArgumentException("Diet not found: " + id));
-    }
-
-    public void save(Diet diet) {
-        if (diet.getId() == null) {
-            entityManager.persist(diet);
-        } else {
-            entityManager.merge(diet);
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            TypedQuery<Diet> query = em.createNamedQuery("diet.findAllByUser", Diet.class);
+            query.setParameter("userId", userId);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 
-    public void delete(Diet diet) {
-        Diet existing = findById(diet.getId());
-        entityManager.remove(existing);
+    @Override
+    public List<Diet> findByIds(List<Long> ids) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(ids).orElse(List.of()).stream()
+                    .map(id -> em.find(Diet.class, id))
+                    .filter(d -> d != null)
+                    .toList();
+        } finally {
+            em.close();
+        }
     }
 
-    private static final DietRepositoryImpl instance = new DietRepositoryImpl();
-    public static DietRepository get() { return instance; }
+    @Override
+    public Diet findById(Long id) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(em.find(Diet.class, id))
+                    .orElseThrow(() -> new IllegalArgumentException("Diet not found: " + id));
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void save(Diet diet) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (diet.getId() == null) {
+                em.persist(diet);
+            } else {
+                em.merge(diet);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void delete(Diet diet) {
+        EntityManager em = DatabaseConfig.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Diet existing = em.find(Diet.class, diet.getId());
+            if (existing == null) throw new IllegalArgumentException("Entity not found: " + diet.getId());
+            em.remove(existing);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

@@ -7,15 +7,15 @@ import jakarta.persistence.*;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "existsByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "existsByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "existsByUsername", query = "SELECT COUNT(u.id) FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "existsByEmail", query = "SELECT COUNT(u.id) FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
 })
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(nullable = false, unique = true)

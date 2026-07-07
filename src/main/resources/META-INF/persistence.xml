@@ -14,18 +14,18 @@
         <class>com.eazyplan.domain.entities.GroceryItem</class>
         <class>com.eazyplan.domain.entities.MacroLog</class>
         <class>com.eazyplan.domain.entities.MicroLog</class>
-        <class>com.eazyplan.domain.entities.Role</class>
 
         <properties>
             <!-- H2 archivo persistente dentro del proyecto -->
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:h2:./db/eazypian;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE"/>
+                      value="jdbc:h2:./db/eazypian;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"/>
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 
             <!-- EclipseLink -->
-            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.logging.level" value="SEVERE"/>
         </properties>

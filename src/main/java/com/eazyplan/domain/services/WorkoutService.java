@@ -11,8 +11,8 @@ import com.eazyplan.domain.repositories.ExerciseRepositoryImpl;
 import com.eazyplan.domain.repositories.ExerciseRepository;
 
 public class WorkoutService {
-    private final WorkoutRepository workoutRepo = WorkoutRepositoryImpl.get();
-    private final ExerciseRepository exerciseRepo = ExerciseRepositoryImpl.get();
+    private final WorkoutRepository workoutRepo = new WorkoutRepositoryImpl();
+    private final ExerciseRepository exerciseRepo = new ExerciseRepositoryImpl();
     
     public List<Workout> getUserWorkouts(Long userId) {
         return workoutRepo.findAllByUser(userId);

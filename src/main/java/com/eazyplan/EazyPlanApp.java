@@ -1,9 +1,11 @@
 package com.eazyplan;
 
+import com.eazyplan.presentation.SceneManager;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -13,12 +15,13 @@ public class EazyPlanApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentation/views/LoginView.fxml"));
-        StackPane root = loader.load();
-        
-        Scene scene = new Scene(root, 800, 600);
+        SceneManager.init(primaryStage);
         primaryStage.setTitle("EazyPlan");
-        primaryStage.setScene(scene);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentation/views/LoginView.fxml"));
+        Parent root = loader.load();
+
+        primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
 

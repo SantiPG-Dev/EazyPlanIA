@@ -6,7 +6,7 @@ import java.util.List;
 import com.eazyplan.domain.repositories.DietRepositoryImpl;
 
 public class DietService {
-    private final DietRepository dietRepo = DietRepositoryImpl.get();
+    private final DietRepository dietRepo = new DietRepositoryImpl();
 
     public List<Diet> getUserDiets(Long userId) { return dietRepo.findAllByUser(userId); }
     public Diet createDiet(Diet diet, UserService userService, Long userId) { 
