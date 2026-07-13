@@ -1,43 +1,33 @@
-import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 /**
- * Dashboard placeholder: muestra al usuario autenticado.
- * Las páginas de Dietas/Entrenamientos/Compra llegan en el Paso 8.
+ * Dashboard: vista principal con navegación a las 3 áreas funcionales.
  */
 export default function DashboardPage() {
-  const { user, logout } = useAuth()
-
   return (
-    <div className="dashboard">
-      <header>
-        <h1>EazyPlanIA</h1>
-        <button className="btn-logout" onClick={logout}>Cerrar sesión</button>
-      </header>
-
+    <div>
       <div className="welcome">
-        <h2>¡Hola, {user?.name}! 👋</h2>
+        <h2>¡Bienvenido! 👋</h2>
         <p>Tu nutrición, entrenamiento y compra en un solo lugar.</p>
       </div>
 
       <div className="card-grid">
-        <div className="feature-card">
+        <Link to="/diets" className="feature-card">
           <span className="emoji">🥗</span>
           <h3>Dietas</h3>
-          <p>Crea y gestiona tus planes nutricionales con reparto de macros.</p>
-        </div>
-        <div className="feature-card">
+          <p>Crea y gestiona tus planes nutricionales con reparto automático de macros.</p>
+        </Link>
+        <Link to="/workouts" className="feature-card">
           <span className="emoji">🏋️</span>
           <h3>Entrenamientos</h3>
-          <p>Registra tus sesiones y ejercicios con seguimiento de progreso.</p>
-        </div>
-        <div className="feature-card">
+          <p>Registra sesiones y ejercicios con seguimiento de series, reps y peso.</p>
+        </Link>
+        <Link to="/grocery" className="feature-card">
           <span className="emoji">🛒</span>
           <h3>Compra</h3>
-          <p>Organiza tu lista de la compra vinculada a tu plan.</p>
-        </div>
+          <p>Organiza tu lista de la compra vinculada a tu plan de alimentación.</p>
+        </Link>
       </div>
-
-      <p className="coming-soon">Próximamente: gestión completa de dietas, entrenamientos y compra.</p>
     </div>
   )
 }
