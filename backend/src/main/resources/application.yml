@@ -28,8 +28,11 @@ server:
 eazyplan:
   security:
     jwt:
-      secret: ${JWT_SECRET:Y2FtYmlhLWVzdGEtY2xhdmUtdXNhLTI1Ni1iaXRzLWVuLXByb2R1Y2Npb24=}  # base64, >=256 bits
+      secret: ${JWT_SECRET:Y2FtYmlhLWVzdGEtY2xhdmUtdXNhLTI1Ni1iaXRzLWVuLXByb2R1Y2Npb24=}
       expiration-minutes: 60
+  ai:
+    base-url: ${AI_BASE_URL:http://localhost:1234}
+    model: ${AI_MODEL:ornith-1.0-9b}
 
 logging:
   level:

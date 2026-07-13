@@ -36,6 +36,9 @@ eazyplan:
     jwt:
       secret: dGVzdC1zZWNyZXQta2V5LWZvci1qd3QtaW4tdGVzdHMtbm90LWZvci1wcm9kdWN0aW9u
       expiration-minutes: 60
+  ai:
+    base-url: http://localhost:1234
+    model: ornith-1.0-9b
 
 logging:
   level:
