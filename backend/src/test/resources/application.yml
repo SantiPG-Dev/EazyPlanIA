@@ -31,6 +31,12 @@ spring:
 server:
   port: 0
 
+eazyplan:
+  security:
+    jwt:
+      secret: dGVzdC1zZWNyZXQta2V5LWZvci1qd3QtaW4tdGVzdHMtbm90LWZvci1wcm9kdWN0aW9u
+      expiration-minutes: 60
+
 logging:
   level:
     org.hibernate.SQL: warn

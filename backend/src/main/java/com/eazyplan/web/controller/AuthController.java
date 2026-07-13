@@ -2,6 +2,8 @@ package com.eazyplan.web.controller;
 
 import com.eazyplan.domain.entities.User;
 import com.eazyplan.service.UserService;
+import com.eazyplan.web.dto.AuthResponse;
+import com.eazyplan.web.dto.LoginRequest;
 import com.eazyplan.web.dto.RegisterRequest;
 import com.eazyplan.web.dto.UserResponse;
 import jakarta.validation.Valid;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 /**
- * Endpoints de autenticación (registro/login).
+ * Endpoints de autenticación: registro y login.
  *
- * <p>Paso 1: solo {@code POST /api/auth/register}. El login con JWT llega en el Paso 5.
+ * <pre>
+ * POST /api/auth/register → 201 UserResponse
+ * POST /api/auth/login    → 200 AuthResponse (JWT)
+ * </pre>
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -35,5 +40,11 @@ public class AuthController {
         return ResponseEntity
                 .created(URI.create("/api/users/" + user.getId()))
                 .body(UserResponse.from(user));
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+        UserService.LoginResult result = userService.login(request.username(), request.password());
+        return AuthResponse.of(result.token(), UserResponse.from(result.user()));
     }
 }

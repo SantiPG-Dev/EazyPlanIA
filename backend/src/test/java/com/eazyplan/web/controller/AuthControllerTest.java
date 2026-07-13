@@ -62,4 +62,46 @@ class AuthControllerTest {
                         .content(body))
                 .andExpect(status().isBadRequest());
     }
+
+    // ── Login (Paso 5) ────────────────────────────────────────────────────
+
+    @Test
+    void login_returns200_withJwt_whenValidCredentials() throws Exception {
+        // Registrar primero
+        mockMvc.perform(post("/api/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(REGISTER_BODY_TEMPLATE.formatted("loginuser", "Login", "login@test.com", "secret123")))
+                .andExpect(status().isCreated());
+
+        // Login
+        mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"loginuser\",\"password\":\"secret123\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").isNotEmpty())
+                .andExpect(jsonPath("$.tokenType").value("Bearer"))
+                .andExpect(jsonPath("$.user.username").value("loginuser"))
+                .andExpect(jsonPath("$.user.password").doesNotExist());
+    }
+
+    @Test
+    void login_returns401_whenWrongPassword() throws Exception {
+        mockMvc.perform(post("/api/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(REGISTER_BODY_TEMPLATE.formatted("badpw", "Bad", "badpw@test.com", "secret123")))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"badpw\",\"password\":\"WRONG\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void login_returns401_whenUnknownUser() throws Exception {
+        mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"ghost\",\"password\":\"secret123\"}"))
+                .andExpect(status().isUnauthorized());
+    }
 }
