@@ -1,5 +1,6 @@
 package com.eazyplan.service;
 
+import com.eazyplan.common.NotFoundException;
 import com.eazyplan.domain.entities.Diet;
 import com.eazyplan.domain.entities.Diet.DietType;
 import com.eazyplan.domain.entities.User;
@@ -23,37 +24,46 @@ public class DietService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Diet> getUserDiets(Long userId) {
         return dietRepository.findAllByUserIdOrderByStartDateDesc(userId);
     }
 
+    @Transactional(readOnly = true)
+    public Diet getDiet(Long dietId) {
+        return dietRepository.findById(dietId)
+                .orElseThrow(() -> new NotFoundException("Diet", dietId));
+    }
+
     public Diet createDiet(Diet diet, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+                .orElseThrow(() -> new NotFoundException("User", userId));
         diet.setUser(user);
         return dietRepository.save(diet);
     }
 
-    public Diet updateDiet(Long dietId, String name, String description, DietType type,
-                           float cal, float protein, float carbs, float fats, float water) {
-        Diet diet = dietRepository.findById(dietId)
-                .orElseThrow(() -> new IllegalArgumentException("Diet not found: " + dietId));
-        if (name != null) diet.setName(name);
-        if (description != null) diet.setDescription(description);
-        if (type != null) diet.setDietType(type);
-        if (cal > 0) diet.setDailyCalories(cal);
-        if (protein >= 0) diet.setDailyProtein(protein);
-        if (carbs >= 0) diet.setDailyCarbs(carbs);
-        if (fats >= 0) diet.setDailyFats(fats);
-        if (water > 0) diet.setDailyWater(water);
+    public Diet updateDiet(Long dietId, Diet changes) {
+        Diet diet = getDiet(dietId);
+        if (changes.getName() != null) diet.setName(changes.getName());
+        if (changes.getDescription() != null) diet.setDescription(changes.getDescription());
+        if (changes.getDietType() != null) diet.setDietType(changes.getDietType());
+        if (changes.getStartDate() != null) diet.setStartDate(changes.getStartDate());
+        if (changes.getEndDate() != null) diet.setEndDate(changes.getEndDate());
+        if (changes.getDailyCalories() > 0) diet.setDailyCalories(changes.getDailyCalories());
+        if (changes.getDailyProtein() >= 0) diet.setDailyProtein(changes.getDailyProtein());
+        if (changes.getDailyCarbs() >= 0) diet.setDailyCarbs(changes.getDailyCarbs());
+        if (changes.getDailyFats() >= 0) diet.setDailyFats(changes.getDailyFats());
+        if (changes.getDailyWater() > 0) diet.setDailyWater(changes.getDailyWater());
         return dietRepository.save(diet);
     }
 
     public void deleteDiet(Long dietId) {
+        getDiet(dietId); // valida existencia → 404 si no existe
         dietRepository.deleteById(dietId);
     }
 
     /** Reparte macros según el tipo de dieta sobre un objetivo calórico (lógica del legado). */
+    @Transactional(readOnly = true)
     public Diet calculateMacros(DietType type, float targetCalories) {
         Diet d = new Diet();
         d.setDietType(type);

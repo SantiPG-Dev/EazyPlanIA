@@ -1,5 +1,6 @@
 package com.eazyplan.service;
 
+import com.eazyplan.common.NotFoundException;
 import com.eazyplan.domain.entities.GroceryItem;
 import com.eazyplan.domain.entities.GroceryList;
 import com.eazyplan.domain.entities.User;
@@ -28,30 +29,44 @@ public class GroceryListService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<GroceryList> getUserLists(Long userId) {
         return groceryListRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
     }
 
-    public GroceryList createList(GroceryList list, Long userId) {
+    @Transactional(readOnly = true)
+    public GroceryList getList(Long listId) {
+        return groceryListRepository.findWithItemsById(listId)
+                .orElseThrow(() -> new NotFoundException("GroceryList", listId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroceryItem> getListItems(Long listId) {
+        return groceryItemRepository.findAllByGroceryListIdOrderByName(listId);
+    }
+
+    public GroceryList createList(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
-        list.setUser(user);
+                .orElseThrow(() -> new NotFoundException("User", userId));
+        GroceryList list = new GroceryList(user);
         list.setCreatedAt(LocalDate.now());
         return groceryListRepository.save(list);
     }
 
-    public GroceryItem addItem(GroceryItem item) {
+    public GroceryItem addItem(Long listId, GroceryItem item) {
+        GroceryList list = getList(listId);
+        item.setGroceryList(list);
         return groceryItemRepository.save(item);
     }
 
     /** orphanRemoval en la entidad elimina los items en cascada. */
     public void deleteList(Long listId) {
+        getList(listId);
         groceryListRepository.deleteById(listId);
     }
 
     public GroceryList markPurchased(Long listId) {
-        GroceryList list = groceryListRepository.findById(listId)
-                .orElseThrow(() -> new IllegalArgumentException("GroceryList not found: " + listId));
+        GroceryList list = getList(listId);
         list.setPurchased(true);
         return groceryListRepository.save(list);
     }

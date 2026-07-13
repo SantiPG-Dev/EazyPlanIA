@@ -1,5 +1,6 @@
 package com.eazyplan.service;
 
+import com.eazyplan.common.NotFoundException;
 import com.eazyplan.domain.entities.Exercise;
 import com.eazyplan.domain.entities.User;
 import com.eazyplan.domain.entities.Workout;
@@ -27,34 +28,47 @@ public class WorkoutService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Workout> getUserWorkouts(Long userId) {
         return workoutRepository.findAllByUserIdOrderByStartTimeDesc(userId);
     }
 
-    public Workout createWorkout(Workout workout, Long userId, String type, LocalDateTime startTime) {
+    @Transactional(readOnly = true)
+    public Workout getWorkout(Long workoutId) {
+        return workoutRepository.findWithExercisesById(workoutId)
+                .orElseThrow(() -> new NotFoundException("Workout", workoutId));
+    }
+
+    public Workout createWorkout(Workout workout, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+                .orElseThrow(() -> new NotFoundException("User", userId));
         workout.setUser(user);
-        workout.setWorkoutType(type != null ? type : "Custom");
-        workout.setStartTime(startTime != null ? startTime : LocalDateTime.now());
+        if (workout.getWorkoutType() == null) workout.setWorkoutType("CUSTOM");
+        if (workout.getStartTime() == null) workout.setStartTime(LocalDateTime.now());
         return workoutRepository.save(workout);
+    }
+
+    public Exercise addExercise(Long workoutId, Exercise exercise) {
+        Workout workout = getWorkout(workoutId);
+        exercise.setWorkout(workout);
+        return exerciseRepository.save(exercise);
     }
 
     public Exercise completeExercise(Long exerciseId) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new IllegalArgumentException("Exercise not found: " + exerciseId));
+                .orElseThrow(() -> new NotFoundException("Exercise", exerciseId));
         exercise.setCompleted(true);
         return exerciseRepository.save(exercise);
     }
 
     public Workout endWorkout(Long workoutId, LocalDateTime endTime) {
-        Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new IllegalArgumentException("Workout not found: " + workoutId));
+        Workout workout = getWorkout(workoutId);
         workout.setEndTime(endTime != null ? endTime : LocalDateTime.now());
         return workoutRepository.save(workout);
     }
 
     public void deleteWorkout(Long workoutId) {
+        getWorkout(workoutId);
         workoutRepository.deleteById(workoutId);
     }
 }
