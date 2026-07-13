@@ -73,23 +73,23 @@ No se trata solo de *funciones*, sino de **código mantenible y bien estructurad
 
 ```
 ┌─────────────────────────────────────────────┐
-│            Presentación (JavaFX)             │  ← lo que ve el usuario
-│   Controllers · FXML Views · SceneManager     │
+│            Presentación (JavaFX)            │  ← lo que ve el usuario
+│  Controllers · FXML Views · SceneManager    │
 └──────────────────┬──────────────────────────┘
                    │  usa servicios
 ┌──────────────────▼──────────────────────────┐
-│              Dominio (Lógica)                │  ← reglas de negocio
-│   Services (User/Diet/Workout/Grocery/...)   │
+│             Dominio (Lógica)                │  ← reglas de negocio
+│   Services (User/Diet/Workout/Grocery/...)  │
 └──────────────────┬──────────────────────────┘
                    │  vía interfaces de repositorio
 ┌──────────────────▼──────────────────────────┐
-│        Repositorios (acceso a datos)         │  ← JPA / EclipseLink
-│   Repository (interfaz) + RepositoryImpl     │
+│       Repositorios (acceso a datos)         │  ← JPA / EclipseLink
+│   Repository (interfaz) + RepositoryImpl    │
 └──────────────────┬──────────────────────────┘
                    │
 ┌──────────────────▼──────────────────────────┐
-│         Infraestructura (persistencia)        │  ← H2 embebida
-│   DatabaseConfig · persistence.xml            │
+│        Infraestructura (persistencia)       │  ← H2 embebida
+│   DatabaseConfig · persistence.xml          │
 └─────────────────────────────────────────────┘
 ```
 
