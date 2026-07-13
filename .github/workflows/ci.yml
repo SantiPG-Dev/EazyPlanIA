@@ -1,0 +1,65 @@
+# GitHub Actions CI para EazyPlanIA
+#
+# - Verifica el backend (mvn verify) con Testcontainers (Docker necesario).
+# - Verifica el frontend (lint, test, build) con Node + pnpm.
+# - Ambos workflows se ejecutan en paralelo en cada push y PR.
+
+name: CI
+
+on:
+  push:
+    branches: [develop, main, 'feature/**']
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  backend:
+    name: Backend — mvn verify
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: maven
+
+      - name: Build & test
+        run: mvn verify -B
+
+  frontend:
+    name: Frontend — pnpm lint + test + build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
