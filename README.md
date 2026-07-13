@@ -16,6 +16,36 @@ Aplicación JavaFX para gestionar de forma integral tu salud: planifica dietas, 
 
 ---
 
+## 🔄 Migración a stack web en curso
+
+> **Estado:** El proyecto está migrando de **app de escritorio JavaFX** a **aplicación web full-stack**
+> (Spring Boot + React + PostgreSQL). El estudio completo de la migración está en
+> [`docs/ESTUDIO-MIGRACION-STACK.md`](./docs/ESTUDIO-MIGRACION-STACK.md).
+>
+> Esta rama (`feature/web-migration`) reorganiza el repositorio como **monorepo**.
+> El contenido de esta página describe la app JavaFX original (referencia del legado).
+
+### Estructura del monorepo
+
+```
+EazyPlanIA/
+├── backend/        🔵 Código Java (actualmente legado JavaFX → se migrará a Spring Boot)
+│   ├── pom.xml
+│   └── src/
+├── frontend/       🟢 React + TypeScript + Vite (scaffold)
+├── docs/           📄 Documentación (estudio de migración)
+├── openspec/       📐 Especificaciones spec-first
+└── README.md
+```
+
+| Fase | Descripción | Estado |
+|------|-------------|--------|
+| 0. Scaffolding | Monorepo `backend/` + `frontend/` | ✅ |
+| 1. Backend base | Spring Boot | ⏳ |
+| 2–10 | Dominio, REST, seguridad, frontend, Docker, CI | ⏳ |
+
+---
+
 ## La idea, en una frase
 
 > **¿Y si llevar tu dieta, tus entrenamientos y tu compra no requiriera tres apps distintas y una hoja de cálculo?**
