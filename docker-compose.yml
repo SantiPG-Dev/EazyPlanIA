@@ -1,5 +1,10 @@
-# Docker Compose para EazyPlanIA — solo la base de datos por ahora.
-# El backend (Paso 10) y frontend se contenerizarán más adelante.
+# Docker Compose para EazyPlanIA — todos los servicios de producción.
+#
+# Uso:
+#   docker compose up --build   (construye y arranca)
+#   docker compose up -d        (modo detached)
+#   http://localhost:5173        (frontend)
+#   http://localhost:8080        (API backend)
 
 services:
   db:
@@ -18,6 +23,34 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eazyplan-backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: eazyplan
+      DB_USER: eazyplan
+      DB_PASSWORD: eazyplan
+      JWT_SECRET: Y2FtYmlhLWVzdGEtY2xhdmUtdXNhLTI1Ni1iaXRzLWVuLXByb2R1Y2Npb24=
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: eazyplan-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
 
 volumes:
   eazyplan-pgdata:
