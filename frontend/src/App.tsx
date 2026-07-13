@@ -5,6 +5,7 @@ import DashboardPage from './pages/DashboardPage'
 import DietsPage from './pages/DietsPage'
 import WorkoutsPage from './pages/WorkoutsPage'
 import GroceryPage from './pages/GroceryPage'
+import AiPage from './pages/AiPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/diets" element={<DietsPage />} />
           <Route path="/workouts" element={<WorkoutsPage />} />
           <Route path="/grocery" element={<GroceryPage />} />
+          <Route path="/ai" element={<AiPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

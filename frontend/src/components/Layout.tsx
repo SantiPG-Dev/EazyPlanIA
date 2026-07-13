@@ -23,6 +23,7 @@ export default function Layout() {
           <NavLink to="/diets" className={linkClass}>Dietas</NavLink>
           <NavLink to="/workouts" className={linkClass}>Entrenamientos</NavLink>
           <NavLink to="/grocery" className={linkClass}>Compra</NavLink>
+          <NavLink to="/ai" className={linkClass}>✨ IA</NavLink>
         </div>
         <div className="nav-user">
           <span>{user?.name}</span>
