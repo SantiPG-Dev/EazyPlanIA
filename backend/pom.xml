@@ -47,11 +47,28 @@
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
-        <!-- H2 en memoria (Paso 1). PostgreSQL + Flyway llegan en el Paso 3 -->
+        <!-- PostgreSQL 16 (Paso 3: reemplaza H2 como BD de runtime) -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Migraciones de esquema versionadas (Paso 3) -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
+        <!-- H2 solo para tests de integración rápidos (Testcontainers llega en el Paso 6) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- Tests -->

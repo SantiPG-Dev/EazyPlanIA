@@ -2,27 +2,25 @@ spring:
   application:
     name: eazyplan-backend
 
-  # Paso 1: H2 en memoria para desarrollo.
-  # El Paso 3 cambia a PostgreSQL + Flyway (ddl-auto: validate).
+  # Paso 3: PostgreSQL 16 (contenedor Docker). Flyway gestiona el esquema.
   datasource:
-    url: jdbc:h2:mem:eazyplan;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:eazyplan}
+    username: ${DB_USER:eazyplan}
+    password: ${DB_PASSWORD:eazyplan}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate          # Flyway crea el esquema; Hibernate solo lo valida
     properties:
       hibernate:
         format_sql: true
         jdbc.time_zone: UTC
     open-in-view: false
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
 
 server:
   port: 8080

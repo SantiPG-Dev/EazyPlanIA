@@ -1,0 +1,23 @@
+# Docker Compose para EazyPlanIA — solo la base de datos por ahora.
+# El backend (Paso 10) y frontend se contenerizarán más adelante.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: eazyplan-db
+    environment:
+      POSTGRES_DB: eazyplan
+      POSTGRES_USER: eazyplan
+      POSTGRES_PASSWORD: eazyplan
+    ports:
+      - "5432:5432"
+    volumes:
+      - eazyplan-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eazyplan -d eazyplan"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  eazyplan-pgdata:
